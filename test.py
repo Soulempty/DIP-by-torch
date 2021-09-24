@@ -24,7 +24,7 @@ def LaplacianOperator(img,op_type=0):
     ops = [[[0,1,0],[1,-4,1],[0,1,0]],[[1,1,1],[1,-8,1],[1,1,1]]]
     operator = np.array(ops[op_type])
     h,w = img.shape
-    result = img.copy()#np.zeros((h,w))
+    result = np.zeros((h,w))
     for r in range(1,h-1):
         for c in range(1,w-1):
             result[r,c] = abs(np.sum(img[r-1:r+2,c-1:c+2] * operator))
