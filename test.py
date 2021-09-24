@@ -37,9 +37,9 @@ def get_lap_img(img_path):
     cv_lap = LaplacianTransform(img)
     manual_lap = LaplacianOperator(img)
     
-    print("lap1:",lap1)
-    print("lap2:",lap2)
-    print("lap3:",lap3)
+    print("torch_lap:",torch_lap)
+    print("cv_lap:",cv_lap)
+    print("manual_lap:",manual_lap)
     
 if __name__ == "__main__":
     img_path = "image/101.jpg"
