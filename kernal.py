@@ -4,8 +4,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 def conv2d(x,k):
-    padding = k.size(-1)//2
-    out = F.conv2d(x, k, padding=padding)
+    ksize = k.size(-1)
+    padding = ksize//2
+    layer = nn.Conv2d(1, 1, ksize, 1, padding=padding,padding_mode='reflect',bias=False)
+    layer.weight = torch.nn.Parameter(k)
+    layer.weight.requires_grad=False
+    out = layer(x)
     return out
 
 def gaussion(k=3,sigma=5):
@@ -22,10 +26,9 @@ def laplacian(style=0):
     op = ops[style]
     return torch.FloatTensor(op).view(1,1,3,3)
 
-def togray(img):
-    x = np.array(img,dtype=np.float32) 
+def togray(x):
     dist = x
-    if len(x.shape) == 3:
+    if len(x.size()) == 3:
         dist = (x[:,:,0]*0.1140 + x[:,:,1]*0.5870 + x[:,:,2]*0.2989) 
     return dist
 
@@ -38,6 +41,3 @@ def gridImg(img_tensor,h_num=11,w_num=7):
     batch = torch.stack(hblocks,-1) # h x w x num
     data = batch.permute(2,0,1).unsqueeze(1) 
     return data
-
-
-
